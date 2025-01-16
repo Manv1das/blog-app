@@ -1,0 +1,53 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forum :: Home</title>
+</head>
+<body>
+<div class="container">
+    <h1>Fooooorum</h1>
+    <hr />
+    <ul>
+        <li>
+            <a th:href="@{/}">Sort with Dates</a>
+        </li>
+        <li>
+            <a th:href="@{/posts/sortByLikes}">Sort with Likes</a>
+        </li>
+    </ul>
+    <ul>
+        <li><a th:href="@{/posts/new}">New Post</a></li>
+        <li><a th:href="@{/users}">All Users</a></li>
+    </ul>
+    <div class="post-container">
+        <div class="post" th:each="post : ${posts}">
+            <h2><a th:href="@{'/posts/' + ${post.id}}" th:text="${post.title}">Title</a>
+            </h2>
+            <h5 th:text="'Written by ' + ${post.account.firstname}">Account First Name</h5>
+            <h5 th:text="'Published on ' + ${post.postedTime}">Posted at</h5>
+            <h5 th:text="'Updated on ' + ${post.updatedTime}">Account First Name</h5>
+            <p th:text="${post.body}">body text</p>
+            <br />
+        </div>
+    </div>
+    <hr />
+    <ul sec:authorize="!isAuthenticated()">
+        <li><a th:href="@{/register}">Register</a></li>
+        <li><a th:href="@{/login}">Login</a></li>
+    </ul>
+    <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}"
+              method="POST">
+            <div>
+                <label>Hi, <span sec:authentication="name">Username</span></label>
+            </div>
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>>

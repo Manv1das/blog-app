@@ -1,0 +1,36 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forum :: Home</title>
+</head>
+<body>
+<div class="container">
+    <h1>Fooooorum</h1>
+    <hr />
+
+    <div class="post-container">
+        <div class="user" th:each="user : ${users}">
+            <h2 th:text="${user.firstname} + ' ' + ${user.lastname}">Name</h2>
+            <h2 th:text="'Id ' + ${user.id}">Id</h2>
+            <h2 th:text="'Email ' + ${user.email}">Email</h2>
+            <div class="post-small" th:each="post : ${user.posts}">
+                <h3><a th:href="@{'/posts/' + ${post.id}}" th:text="${post.title}">Title</a>
+                </h3>
+                <h5 th:text="'Written by ' + ${post.account.firstname}">Account First Name</h5>
+                <h5 th:text="'Published on ' + ${post.postedTime}">Posted at</h5>
+                <h5 th:text="'Updated on ' + ${post.updatedTime}">Account First Name</h5>
+                <p th:text="${post.body}">body text</p>
+                <br />
+            </div>
+            <br />
+        </div>
+    </div>
+    <hr />
+
+</div>
+</body>
+</html>>

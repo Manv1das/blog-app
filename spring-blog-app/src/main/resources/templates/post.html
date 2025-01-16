@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog :: Post</title>
+</head>
+<body>
+<div class="container">
+    <div class="post">
+        <ul sec:authorize="isAuthenticated()">
+            <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
+            <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
+        </ul>
+
+        <h2 th:text="${post.title}">Title</h2>
+        <h5 th:text="'Written by ' + ${post.account.firstname}">Account First Name</h5>
+        <h5 th:text="'Created on ' + ${post.postedTime}">Created At</h5>
+        <h5 th:text="'Updated on ' + ${post.updatedTime}">Created At</h5>
+        <p th:text="${post.body}">body text</p>
+
+        <div class="comments" th:each="comment : ${post.comments}">
+            <h3 th:text="${comment.account.firstname} + ' ' + ${comment.account.lastname}">User</h3>
+            <h3 th:text="${comment.content}">Content</h3>
+            <h5 th:text="'Written on ' + ${comment.commentedTime}">Time</h5>
+            <br />
+        </div>
+
+        <div class="newcomm">
+        <form action="#"
+              th:action="@{'/posts/{id}/comment'(id=${post.id})}"
+              th:object="${comment}"
+              enctype="multipart/form-data"
+              method="POST">
+            <input type="hidden" th:field="*{account}" />
+            <input type="hidden" th:field="*{id}" />
+            <h2>Update Post</h2>
+            <div>
+                <label for="comment-content">Content</label>
+                <input id="comment-content" type="text" th:field="*{content}" placeholder="Title"/>
+            </div>
+            <button type="submit">Update Post</button>
+        </form>
+
+            <h2 th:text="${numlikes}">Amount Likes</h2>
+            <form action="#"
+                  th:action="@{'/posts/{id}/like'(id=${post.id})}"
+                  th:object="${like}"
+                  enctype="multipart/form-data"
+                  method="POST">
+                <input type="hidden" th:field="*{id}" />
+                <button type="submit">Like</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
